@@ -1,0 +1,30 @@
+groups:
+  - name: inference-gateway
+    rules:
+      - alert: GatewayUnavailable
+        expr: up{job="gateway"} == 0
+        for: 15s
+        labels:
+          severity: critical
+        annotations:
+          summary: Gateway cannot be scraped
+      - alert: NoReadyInferenceBackends
+        expr: sum(gateway_backend_ready) == 0
+        for: 10s
+        labels:
+          severity: critical
+        annotations:
+          summary: No backend has fresh healthy capacity information
+      - alert: InferenceQueueBuilding
+        expr: gateway_queue_depth > 96
+        for: 15s
+        labels:
+          severity: warning
+        annotations:
+          summary: Queue is above 75 percent of the default 128 request bound
+      - alert: InferenceStreamsInterrupted
+        expr: increase(gateway_stream_failures_total[1m]) > 0
+        labels:
+          severity: warning
+        annotations:
+          summary: At least one response stream did not complete

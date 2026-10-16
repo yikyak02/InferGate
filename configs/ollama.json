@@ -1,0 +1,12 @@
+{
+  "listen":"127.0.0.1:8080",
+  "model":"llama3.2:1b",
+  "policy":"memory",
+  "queue_size":16,
+  "queue_timeout":"10s",
+  "request_timeout":"2m",
+  "max_context_tokens":8192,
+  "backends":[
+    {"id":"ollama-local","url":"http://127.0.0.1:11434","kind":"ollama","capacity_tokens":8192,"max_concurrent":1}
+  ]
+}

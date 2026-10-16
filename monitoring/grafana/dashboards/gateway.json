@@ -1,0 +1,79 @@
+{
+  "uid":"memory-gateway",
+  "title":"Memory-Aware Inference Gateway",
+  "tags":["inference","sre"],
+  "schemaVersion":39,
+  "version":1,
+  "refresh":"5s",
+  "time":{"from":"now-15m","to":"now"},
+  "panels":[
+    {
+      "id":1,"title":"Offered and completed requests / second","type":"timeseries",
+      "gridPos":{"x":0,"y":0,"w":12,"h":8},
+      "datasource":{"type":"prometheus","uid":"prometheus"},
+      "targets":[
+        {"refId":"A","expr":"rate(gateway_requests_total[$__rate_interval])","legendFormat":"offered"},
+        {"refId":"B","expr":"rate(gateway_completed_total[$__rate_interval])","legendFormat":"completed"}
+      ],
+      "fieldConfig":{"defaults":{"unit":"reqps"},"overrides":[]}
+    },
+    {
+      "id":2,"title":"Completed latency p95 and p99 (seconds)","type":"timeseries",
+      "gridPos":{"x":12,"y":0,"w":12,"h":8},
+      "datasource":{"type":"prometheus","uid":"prometheus"},
+      "targets":[
+        {"refId":"A","expr":"histogram_quantile(0.95, sum by(le)(rate(gateway_completion_seconds_bucket[$__rate_interval])))","legendFormat":"p95"},
+        {"refId":"B","expr":"histogram_quantile(0.99, sum by(le)(rate(gateway_completion_seconds_bucket[$__rate_interval])))","legendFormat":"p99"}
+      ],
+      "fieldConfig":{"defaults":{"unit":"s"},"overrides":[]}
+    },
+    {
+      "id":3,"title":"Queue depth","type":"timeseries",
+      "gridPos":{"x":0,"y":8,"w":12,"h":7},
+      "datasource":{"type":"prometheus","uid":"prometheus"},
+      "targets":[{"refId":"A","expr":"gateway_queue_depth","legendFormat":"queued"}],
+      "fieldConfig":{"defaults":{"min":0,"unit":"short"},"overrides":[]}
+    },
+    {
+      "id":4,"title":"Rejections and interrupted streams / second","type":"timeseries",
+      "gridPos":{"x":12,"y":8,"w":12,"h":7},
+      "datasource":{"type":"prometheus","uid":"prometheus"},
+      "targets":[
+        {"refId":"A","expr":"rate({__name__=~\"gateway_rejected_.*_total\"}[$__rate_interval])","legendFormat":"{{__name__}}"},
+        {"refId":"B","expr":"rate(gateway_stream_failures_total[$__rate_interval])","legendFormat":"interrupted stream"}
+      ]
+    },
+    {
+      "id":5,"title":"Reserved / configured token capacity","type":"timeseries",
+      "gridPos":{"x":0,"y":15,"w":12,"h":7},
+      "datasource":{"type":"prometheus","uid":"prometheus"},
+      "targets":[{"refId":"A","expr":"gateway_backend_reserved_tokens / gateway_backend_capacity_tokens","legendFormat":"{{backend}}"}],
+      "fieldConfig":{"defaults":{"unit":"percentunit","min":0},"overrides":[]}
+    },
+    {
+      "id":6,"title":"Ready backends (1 = ready)","type":"timeseries",
+      "gridPos":{"x":12,"y":15,"w":12,"h":7},
+      "datasource":{"type":"prometheus","uid":"prometheus"},
+      "targets":[{"refId":"A","expr":"gateway_backend_ready","legendFormat":"{{backend}}"}],
+      "fieldConfig":{"defaults":{"min":0,"max":1},"overrides":[]}
+    },
+    {
+      "id":7,"title":"Time to first upstream token p95 (includes queue)","type":"timeseries",
+      "gridPos":{"x":0,"y":22,"w":12,"h":7},
+      "datasource":{"type":"prometheus","uid":"prometheus"},
+      "targets":[{"refId":"A","expr":"histogram_quantile(0.95, sum by(le)(rate(gateway_ttft_seconds_bucket[$__rate_interval])))","legendFormat":"p95"}],
+      "fieldConfig":{"defaults":{"unit":"s"},"overrides":[]}
+    },
+    {
+      "id":8,"title":"Queue wait p95 by priority","type":"timeseries",
+      "gridPos":{"x":12,"y":22,"w":12,"h":7},
+      "datasource":{"type":"prometheus","uid":"prometheus"},
+      "targets":[
+        {"refId":"A","expr":"histogram_quantile(0.95, sum by(le)(rate(gateway_queue_wait_priority_0_seconds_bucket[$__rate_interval])))","legendFormat":"normal"},
+        {"refId":"B","expr":"histogram_quantile(0.95, sum by(le)(rate(gateway_queue_wait_priority_1_seconds_bucket[$__rate_interval])))","legendFormat":"elevated"},
+        {"refId":"C","expr":"histogram_quantile(0.95, sum by(le)(rate(gateway_queue_wait_priority_2_seconds_bucket[$__rate_interval])))","legendFormat":"urgent"}
+      ],
+      "fieldConfig":{"defaults":{"unit":"s"},"overrides":[]}
+    }
+  ]
+}

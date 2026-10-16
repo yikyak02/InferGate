@@ -1,0 +1,8 @@
+{
+  "passed": [
+    "streaming and non-streaming through executable gateway",
+    "overload returns HTTP 429 at the configured concurrency bound",
+    "client disconnect cancels backend work and releases reservations",
+    "SIGTERM drains HTTP handling and cancels active generation"
+  ]
+}

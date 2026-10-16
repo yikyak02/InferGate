@@ -1,0 +1,311 @@
+{
+  "environment": "synthetic simulation; not GPU measurements",
+  "estimate_multiplier": 1.15,
+  "fault_at": "0s",
+  "fault_for": "1s",
+  "output_fraction": 1,
+  "policies": [
+    {
+      "policy": "round_robin",
+      "summary": {
+        "seed": 42,
+        "requests": 400,
+        "elapsed_seconds": 6.326484125,
+        "arrival_window_seconds": 3.325,
+        "outcomes": {
+          "completed": 142,
+          "http_error": 258
+        },
+        "statuses": {
+          "200": 142,
+          "429": 111,
+          "502": 147
+        },
+        "completed": 142,
+        "within_slo": 82,
+        "slo_ms": 1000,
+        "completion_fraction": 0.355,
+        "slo_goodput_per_second": 12.961385562632705,
+        "completed_latency_ms": {
+          "p50": 267.799834,
+          "p95": 3734.173292,
+          "p99": 4416.588791
+        },
+        "completed_ttft_ms": {
+          "p50": 18.984917,
+          "p95": 3613.210458,
+          "p99": 3654.689417
+        },
+        "launch_lag_ms": {
+          "p50": 0.239168,
+          "p95": 1.123793,
+          "p99": 1.745168
+        },
+        "groups": {
+          "long/priority_0": {
+            "offered": 114,
+            "completed": 19,
+            "within_slo": 9,
+            "completed_latency_ms": {
+              "p50": 2004.003916,
+              "p95": 4450.662833,
+              "p99": 4450.662833
+            },
+            "completed_queue_ms": {
+              "p50": 1561.701,
+              "p95": 3611.464,
+              "p99": 3611.464
+            }
+          },
+          "long/priority_2": {
+            "offered": 26,
+            "completed": 4,
+            "within_slo": 3,
+            "completed_latency_ms": {
+              "p50": 659.82525,
+              "p95": 2635.087833,
+              "p99": 2635.087833
+            },
+            "completed_queue_ms": {
+              "p50": 0,
+              "p95": 2229.472,
+              "p99": 2229.472
+            }
+          },
+          "short/priority_0": {
+            "offered": 207,
+            "completed": 86,
+            "within_slo": 48,
+            "completed_latency_ms": {
+              "p50": 118.753291,
+              "p95": 3734.173292,
+              "p99": 3798.296334
+            },
+            "completed_queue_ms": {
+              "p50": 0,
+              "p95": 3619.456,
+              "p99": 3653.129
+            }
+          },
+          "short/priority_2": {
+            "offered": 53,
+            "completed": 33,
+            "within_slo": 22,
+            "completed_latency_ms": {
+              "p50": 122.754292,
+              "p95": 2485.103917,
+              "p99": 2493.400167
+            },
+            "completed_queue_ms": {
+              "p50": 0,
+              "p95": 2362.85,
+              "p99": 2371.294
+            }
+          }
+        }
+      }
+    },
+    {
+      "policy": "least_outstanding",
+      "summary": {
+        "seed": 42,
+        "requests": 400,
+        "elapsed_seconds": 8.332331291,
+        "arrival_window_seconds": 3.325,
+        "outcomes": {
+          "completed": 102,
+          "http_error": 298
+        },
+        "statuses": {
+          "200": 102,
+          "429": 130,
+          "502": 168
+        },
+        "completed": 102,
+        "within_slo": 28,
+        "slo_ms": 1000,
+        "completion_fraction": 0.255,
+        "slo_goodput_per_second": 3.360404072056477,
+        "completed_latency_ms": {
+          "p50": 2253.000458,
+          "p95": 4599.720291,
+          "p99": 5257.229
+        },
+        "completed_ttft_ms": {
+          "p50": 2016.810167,
+          "p95": 4446.606375,
+          "p99": 4487.448458
+        },
+        "launch_lag_ms": {
+          "p50": 0.250666,
+          "p95": 1.031584,
+          "p99": 1.342834
+        },
+        "groups": {
+          "long/priority_0": {
+            "offered": 114,
+            "completed": 19,
+            "within_slo": 6,
+            "completed_latency_ms": {
+              "p50": 2451.913292,
+              "p95": 5306.852583,
+              "p99": 5306.852583
+            },
+            "completed_queue_ms": {
+              "p50": 1935.689,
+              "p95": 4470.771,
+              "p99": 4470.771
+            }
+          },
+          "long/priority_2": {
+            "offered": 26,
+            "completed": 3,
+            "within_slo": 1,
+            "completed_latency_ms": {
+              "p50": 2370.037584,
+              "p95": 2585.900208,
+              "p99": 2585.900208
+            },
+            "completed_queue_ms": {
+              "p50": 1961.087,
+              "p95": 2136.398,
+              "p99": 2136.398
+            }
+          },
+          "short/priority_0": {
+            "offered": 207,
+            "completed": 64,
+            "within_slo": 11,
+            "completed_latency_ms": {
+              "p50": 2360.301167,
+              "p95": 4546.140375,
+              "p99": 4604.255625
+            },
+            "completed_queue_ms": {
+              "p50": 2254.57,
+              "p95": 4437.239,
+              "p99": 4478.878
+            }
+          },
+          "short/priority_2": {
+            "offered": 53,
+            "completed": 16,
+            "within_slo": 10,
+            "completed_latency_ms": {
+              "p50": 154.217375,
+              "p95": 2210.567916,
+              "p99": 2210.567916
+            },
+            "completed_queue_ms": {
+              "p50": 0,
+              "p95": 2111.391,
+              "p99": 2111.391
+            }
+          }
+        }
+      }
+    },
+    {
+      "policy": "memory",
+      "summary": {
+        "seed": 42,
+        "requests": 400,
+        "elapsed_seconds": 8.969509542,
+        "arrival_window_seconds": 3.325,
+        "outcomes": {
+          "completed": 314,
+          "http_error": 86
+        },
+        "statuses": {
+          "200": 314,
+          "503": 86
+        },
+        "completed": 314,
+        "within_slo": 266,
+        "slo_ms": 1000,
+        "completion_fraction": 0.785,
+        "slo_goodput_per_second": 29.656025087486324,
+        "completed_latency_ms": {
+          "p50": 81.177125,
+          "p95": 5339.18725,
+          "p99": 5731.420375
+        },
+        "completed_ttft_ms": {
+          "p50": 6.373208,
+          "p95": 4915.545042,
+          "p99": 5023.679417
+        },
+        "launch_lag_ms": {
+          "p50": 0.057376,
+          "p95": 0.300084,
+          "p99": 0.427542
+        },
+        "groups": {
+          "long/priority_0": {
+            "offered": 114,
+            "completed": 38,
+            "within_slo": 3,
+            "completed_latency_ms": {
+              "p50": 4138.824625,
+              "p95": 5795.827459,
+              "p99": 5802.328541
+            },
+            "completed_queue_ms": {
+              "p50": 3629.895,
+              "p95": 4997.496,
+              "p99": 4998.523
+            }
+          },
+          "long/priority_2": {
+            "offered": 26,
+            "completed": 16,
+            "within_slo": 6,
+            "completed_latency_ms": {
+              "p50": 1342.823375,
+              "p95": 5774.35475,
+              "p99": 5774.35475
+            },
+            "completed_queue_ms": {
+              "p50": 845.386,
+              "p95": 4998.775,
+              "p99": 4998.775
+            }
+          },
+          "short/priority_0": {
+            "offered": 207,
+            "completed": 207,
+            "within_slo": 206,
+            "completed_latency_ms": {
+              "p50": 76.23175,
+              "p95": 189.031458,
+              "p99": 226.120542
+            },
+            "completed_queue_ms": {
+              "p50": 0,
+              "p95": 105.287,
+              "p99": 140.674
+            }
+          },
+          "short/priority_2": {
+            "offered": 53,
+            "completed": 53,
+            "within_slo": 51,
+            "completed_latency_ms": {
+              "p50": 74.565583,
+              "p95": 158.588584,
+              "p99": 4922.660667
+            },
+            "completed_queue_ms": {
+              "p50": 0,
+              "p95": 26.219,
+              "p99": 4873.273
+            }
+          }
+        }
+      }
+    }
+  ],
+  "rate": 120,
+  "requests": 400,
+  "seed": 42
+}

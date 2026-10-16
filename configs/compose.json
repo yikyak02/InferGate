@@ -1,0 +1,11 @@
+{
+  "listen": ":8080",
+  "model": "demo",
+  "policy": "memory",
+  "queue_size":128,
+  "backends":[
+    {"id":"backend-a","url":"http://backend-a:9001","kind":"sim","capacity_tokens":512,"max_concurrent":32},
+    {"id":"backend-b","url":"http://backend-b:9001","kind":"sim","capacity_tokens":1024,"max_concurrent":32},
+    {"id":"backend-c","url":"http://backend-c:9001","kind":"sim","capacity_tokens":2048,"max_concurrent":32}
+  ]
+}

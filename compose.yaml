@@ -1,0 +1,46 @@
+name: memory-inference-gateway
+x-simulator: &simulator
+  image: memory-inference-gateway:local
+  build: .
+  entrypoint: ["/simulator"]
+  environment:
+    SIM_ADMIN_TOKEN: "${SIM_ADMIN_TOKEN:-local-demo}"
+  restart: unless-stopped
+services:
+  gateway:
+    image: memory-inference-gateway:local
+    build: .
+    ports: ["127.0.0.1:8080:8080"]
+    depends_on: [backend-a, backend-b, backend-c]
+    restart: unless-stopped
+  backend-a:
+    <<: *simulator
+    command: ["-listen", ":9001", "-capacity", "512", "-token-delay", "2ms"]
+    ports: ["127.0.0.1:9001:9001"]
+  backend-b:
+    <<: *simulator
+    command: ["-listen", ":9001", "-capacity", "1024", "-token-delay", "3ms"]
+    ports: ["127.0.0.1:9002:9001"]
+  backend-c:
+    <<: *simulator
+    command: ["-listen", ":9001", "-capacity", "2048", "-token-delay", "4ms"]
+    ports: ["127.0.0.1:9003:9001"]
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    command: ["--config.file=/etc/prometheus/prometheus.yml"]
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/alerts.yml:/etc/prometheus/alerts.yml:ro
+    ports: ["127.0.0.1:9090:9090"]
+    depends_on: [gateway]
+  grafana:
+    image: grafana/grafana:12.2.0
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: "${GRAFANA_ADMIN_PASSWORD:-local-demo-only}"
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports: ["127.0.0.1:3000:3000"]
+    depends_on: [prometheus]

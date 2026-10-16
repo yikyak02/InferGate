@@ -1,0 +1,20 @@
+.tools/
+.cache/
+bin/
+results/
+*.log
+*.test
+.DS_Store
+
+# Local environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Python caches
+__pycache__/
+*.pyc
+
+# Go coverage output
+coverage.out
+coverage.html
