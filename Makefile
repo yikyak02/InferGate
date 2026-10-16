@@ -1,9 +1,10 @@
 GO ?= $(if $(wildcard .tools/go/bin/go),$(CURDIR)/.tools/go/bin/go,go)
+KUBECTL ?= kubectl
 export GOCACHE := $(CURDIR)/.cache/go-build
 export GOMODCACHE := $(CURDIR)/.cache/go-mod
 export GOTOOLCHAIN := local
 
-.PHONY: build test check smoke demo benchmark clean
+.PHONY: build test check smoke demo benchmark clean k8s-render k8s-apply k8s-smoke
 build:
 	@mkdir -p bin
 	$(GO) build -o bin/gateway ./cmd/gateway
@@ -21,5 +22,11 @@ smoke: build
 	python3 scripts/smoke.py
 benchmark: build
 	./bin/experiment -output results/comparison
+k8s-render:
+	@$(KUBECTL) kustomize .
+k8s-apply:
+	$(KUBECTL) apply -k .
+k8s-smoke:
+	python3 scripts/kubernetes_smoke.py --kubectl "$(KUBECTL)"
 clean:
 	rm -rf bin .cache

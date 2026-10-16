@@ -37,6 +37,23 @@ docker compose up --build
 
 The Compose setup binds host ports to loopback. Grafana permits anonymous viewing; the development admin credentials are `admin` / `local-demo-only`, overridable with `GRAFANA_ADMIN_PASSWORD`. These are local development defaults.
 
+## Run on Kubernetes
+
+The root `kustomization.yaml` deploys the gateway, three simulator backends, Prometheus, and Grafana into the `memory-gateway` namespace. It reuses the existing gateway configuration, alert rules, and dashboard. Requires Docker, kubectl, and a cluster; for a local kind cluster:
+
+```sh
+kind create cluster --name memory-gateway
+docker build -t memory-inference-gateway:local .
+kind load docker-image memory-inference-gateway:local --name memory-gateway
+make k8s-apply
+make k8s-smoke
+kubectl -n memory-gateway port-forward --address=127.0.0.1 service/gateway 8080:8080
+```
+
+The gateway is then available at `http://127.0.0.1:8080`. `make k8s-smoke` waits for all deployments and checks backend connectivity, generation, Prometheus scraping and alerts, and the Grafana dashboard and data source. It closes its temporary port forwards when finished.
+
+See [the Kubernetes guide](docs/kubernetes.md) for monitoring access, registry images, updates, troubleshooting, and cleanup. **Keep one gateway replica and one replica per backend.** Capacity reservations are local to each gateway, and each configured backend URL must identify one inference process. The manifests use `Recreate` updates, which briefly interrupt service.
+
 ## Use Ollama on your Mac
 
 With Ollama installed and running, pull the example model and start the gateway:

@@ -14,3 +14,30 @@ jobs:
       - run: make check test build
       - run: make smoke
       - run: docker compose config --quiet
+  kubernetes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: helm/kind-action@v1
+        with:
+          version: v0.30.0
+          kubectl_version: v1.34.1
+          node_image: kindest/node:v1.34.0
+          cluster_name: memory-gateway
+      - run: docker build -t memory-inference-gateway:local .
+      - run: kind load docker-image memory-inference-gateway:local --name memory-gateway
+      - name: Validate manifests against the Kubernetes API
+        run: |
+          kubectl apply -f k8s/namespace.yaml
+          kubectl apply --dry-run=server --validate=strict -k .
+      - run: make k8s-apply k8s-smoke
+      - name: Show cluster diagnostics on failure
+        if: failure()
+        run: |
+          kubectl -n memory-gateway get pods,services -o wide
+          kubectl -n memory-gateway get events --sort-by=.lastTimestamp
+          kubectl -n memory-gateway describe pods
+          kubectl -n memory-gateway logs -l app=gateway --all-containers --tail=100
+          kubectl -n memory-gateway logs -l app=prometheus --all-containers --tail=100
+          kubectl -n memory-gateway logs -l app=grafana --all-containers --tail=100
